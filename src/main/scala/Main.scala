@@ -1,3 +1,5 @@
+import scala.concurrent.duration._
+
 import akka.actor.{ ActorSystem , Actor, Props }
 import akka.event.Logging
 import akka.util.Timeout
@@ -15,8 +17,11 @@ object Main extends App {
   implicit val system = ActorSystem()
   implicit val ec = system.dispatcher
   implicit val materializer = ActorMaterializer()
+  implicit val timeout: Timeout = FiniteDuration(1, "s")
 
-  val bindingFuture = Http().bindAndHandle(RestApi.routes, host, port)
+  val boxOfficeActor = system.actorOf(BoxOffice.props, BoxOffice.name)
+
+  val bindingFuture = Http().bindAndHandle(new RestApi(boxOfficeActor).routes, host, port)
   scala.io.StdIn.readLine() // let it run until user presses return
   bindingFuture
     .flatMap(_.unbind()) // trigger unbinding from the port
