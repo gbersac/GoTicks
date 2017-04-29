@@ -1,7 +1,8 @@
-import scala.concurrent.Future
-
 import akka.actor._
-import akka.util.Timeout
+import akka.actor.ActorIdentity
+import akka.actor.Identify
+
+import scala.concurrent.duration._
 
 class ProxyRemoteActor(implicit timeout: Timeout) extends Actor {
   import ProxyRemoteActor._

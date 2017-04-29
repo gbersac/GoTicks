@@ -20,7 +20,7 @@ object MainServer extends App {
   implicit val materializer = ActorMaterializer()
   implicit val timeout: Timeout = FiniteDuration(1, "s")
 
-  val proxyActor = system.actorOf(ProxyRemoteActor.props, "proxy")
+  val proxyActor = system.actorOf(ProxyRemoteActor.props, "server")
 
   val route =
     pathPrefix("printRemote") {
